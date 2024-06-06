@@ -40,4 +40,26 @@ final class LoginReducerTests: XCTestCase {
         await store.send(.login)
         await store.receive(\.showHome) 
     }
+    
+    @MainActor
+    func test_signup_navigation() async {
+        let store = TestStore(initialState: LoginReducer.State()) {
+            LoginReducer()
+        }
+        // show signup
+        await store.send(.showSignup) {
+            $0.path[id: 0] = .signup(SignupReducer.State(username: "Demo", password: "password", confirmPassword: "password"))
+        }
+    }
+    
+    @MainActor
+    func test_forgotPassword_navigation() async {
+        let store = TestStore(initialState: LoginReducer.State()) {
+            LoginReducer()
+        }
+        // show forgotPassword
+        await store.send(.showForgoPassword) {
+            $0.path[id: 0] = .forgotPassword(ForgotPasswordReducer.State(password: "password", confirmPassword: "password"))
+        }
+    }
 }

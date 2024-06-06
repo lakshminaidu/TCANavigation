@@ -30,6 +30,7 @@ struct SignupView: View {
             }, title: "Login")
         }
         .padding()
+        .navigationTitle("Signup")
     }
 }
 

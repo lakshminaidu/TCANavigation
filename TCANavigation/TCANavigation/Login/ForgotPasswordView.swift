@@ -18,6 +18,7 @@ struct ForgotPasswordView: View {
             AppButton(action: { store.send(.updatePassword) }, title: "Update")
         }
         .padding()
+        .navigationTitle("Forgot Password")
     }
 }
 
