@@ -59,45 +59,49 @@ struct SignupReducer {
     }
     var body: some ReducerOf<Self> {
         BindingReducer()
-        Reduce { state, action in
-            switch action {
-            case .signup:
-                if state.username.isEmpty {
-                    state.isValid = false
-                    state.validationError = "Please enter username"
-                    return .none
-                } else if state.password.isEmpty || state.confirmPassword.isEmpty {
-                    state.isValid = false
-                    state.validationError = "Please enter username"
-                    return .none
-                }
-                return .run { send in
-                    await send(.showHome)
-                }
-            case .showLogin:
-                return .none
-            case .showHome:
-                state.isValid = true
-                state.validationError = ""
-                return .none
-            case .binding(_):
-                state.isValid = true
-                state.validationError = ""
-                return .none
-            case .binding(\.username):
-                // username observing here
-                print("username", state.username)
-                return .none
-            case .binding(\.password):
-                // username observing here
-                print("password", state.password)
-                return .none
-            case .binding(\.confirmPassword):
-                // username observing here
-                print("password", state.confirmPassword)
-                return .none
-            }
-            
-        }
+		Reduce { state, action in
+			switch action {
+			case .signup:
+				if state.username.isEmpty {
+					state.isValid = false
+					state.validationError = "Please enter username"
+					return .none
+				} else if state.password.isEmpty || state.confirmPassword.isEmpty {
+					state.isValid = false
+					state.validationError = "Please enter password"
+					return .none
+				} else if state.password != state.confirmPassword {
+					state.isValid = false
+					state.validationError = "Passwords are not matching"
+					return .none
+				} else {
+					return .run { send in
+						await send(.showHome)
+					}
+				}
+			case .showLogin:
+				return .none
+			case .showHome:
+				state.isValid = true
+				state.validationError = ""
+				return .none
+			case .binding(_):
+				state.isValid = true
+				state.validationError = ""
+				return .none
+			case .binding(\.username):
+				// username observing here
+				print("username", state.username)
+				return .none
+			case .binding(\.password):
+				// username observing here
+				print("password", state.password)
+				return .none
+			case .binding(\.confirmPassword):
+				// username observing here
+				print("password", state.confirmPassword)
+				return .none
+			}
+		}
     }
 }

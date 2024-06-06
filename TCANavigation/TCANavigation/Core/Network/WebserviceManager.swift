@@ -48,3 +48,7 @@ enum NetworkError: Error {
     case badStatus
     case failedToDecodeResponse
 }
+
+class ApiManager: WebServiceType {
+	static let shared: ApiManager = ApiManager()
+}

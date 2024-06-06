@@ -29,8 +29,6 @@ struct HomeView: View {
                         Image(systemName: "rectangle.portrait.and.arrow.right").resizable()
                     }
                 }
-            
-            
         } destination: { state in
             switch state.case {
             case .detail(let store):
@@ -46,38 +44,35 @@ struct HomeView: View {
     
     @ViewBuilder
     private var content: some View {
-        VStack {
-            if store.isLoading {
-                ProgressView()
-                    .tint(.red)
-            } else {
-                ScrollView(.vertical) {
-                    LazyVStack(alignment: .leading) {
-                        ForEach(store.posts, id: \.id) { post in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(post.title ?? "")
-                                        .fontWeight(.bold)
-                                        .multilineTextAlignment(.leading)
-                                    Text(post.body ?? "")
-                                        .font(.caption)
-                                        .multilineTextAlignment(.leading)
-                                    
-                                }
-                                .foregroundColor(.white)
-                                Spacer()
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.purple.cornerRadius(8))
-                            .onTapGesture {
-                                store.send(.showDetail(post.userId))
-                            }
-                        }
-                    }
-                }
-            }
-        }
+		VStack {
+			ScrollView(.vertical) {
+				LazyVStack(alignment: .leading) {
+					ForEach(store.posts, id: \.id) { post in
+						HStack {
+							VStack(alignment: .leading) {
+								Text(post.title ?? "")
+									.fontWeight(.bold)
+									.multilineTextAlignment(.leading)
+								Text(post.body ?? "")
+									.font(.caption)
+									.multilineTextAlignment(.leading)
+
+							}
+							.foregroundColor(.white)
+							Spacer()
+						}
+						.frame(maxWidth: .infinity)
+						.padding()
+						.background(Color.purple.cornerRadius(8))
+						.onTapGesture {
+							store.send(.showDetail(post.userId))
+						}
+					}
+				}
+				.redacted(reason: store.isLoading ? .placeholder : .invalidated)
+			}
+
+		}
         .padding(.horizontal)
     }
 }
@@ -120,9 +115,10 @@ struct HomeReducer {
                 return .none
             case .fetchdData:
                 state.isLoading = true
+				state.posts = Post.mocks
                 return .run { send in
                     do {
-                        let posts: [Post] = try await self.apiClient.fetch(fromURL: "https://jsonplaceholder.typicode.com/posts")
+                        let posts: [Post] = try await self.apiClient.fetchPosts( "https://jsonplaceholder.typicode.com/posts")
                         await send(.processResponse(posts))
                     } catch {
                         await send(.processResponse([]))
@@ -157,5 +153,4 @@ struct HomeReducer {
         case detail(DetailReducer)
         case profile(ProfileReducer)
     }
-    
 }

@@ -34,6 +34,13 @@ struct DetailView: View {
             }
         }
         .navigationTitle("Todos")
+        .toolbar {
+            Button  {
+                store.send(.logout)
+            } label: {
+                Image(systemName: "rectangle.portrait.and.arrow.right").resizable()
+            }
+        }
         .task {
             store.send(.fetchdData)
         }
@@ -71,7 +78,7 @@ struct DetailReducer {
                 state.isLoading = true
                 return .run { [userid = state.userid] send in
                     do {
-                        let todos: [TodoItem] = try await self.apiClient.fetch(fromURL: "https://jsonplaceholder.typicode.com/user/\(userid)/todos")
+						let todos: [TodoItem] = try await self.apiClient.fetchTodos("https://jsonplaceholder.typicode.com/user/\(userid)/todos")
                         await send(.processResponse(todos))
                     } catch {
                         await send(.processResponse([]))

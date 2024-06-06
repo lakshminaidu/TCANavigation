@@ -9,9 +9,8 @@ import XCTest
 import ComposableArchitecture
 @testable import TCANavigation
 
-@MainActor
 final class AppRootReducerTests: XCTestCase {
-
+    @MainActor
     func test_login_success() async {
         let store = TestStore(initialState: AppRootReducer.State(login: LoginReducer.State(username: "Test", password: "Test"), isLoggedIn: false)) {
             AppRootReducer()
@@ -21,7 +20,7 @@ final class AppRootReducerTests: XCTestCase {
             $0.isLoggedIn = true
         }
     }
-    
+    @MainActor
     func test_login_validation() async {
         let store = TestStore(initialState: AppRootReducer.State(isLoggedIn: false)) {
             AppRootReducer()
@@ -31,7 +30,7 @@ final class AppRootReducerTests: XCTestCase {
             $0.login.validationError = "Please enter username"
         }
     }
-    
+    @MainActor
     func test_logout() async {
         let store = TestStore(initialState: AppRootReducer.State(isLoggedIn: true)) {
             AppRootReducer()
@@ -40,7 +39,7 @@ final class AppRootReducerTests: XCTestCase {
             $0.isLoggedIn = false
         }
     }
-    
+    @MainActor
     func test_signup_navigation_Login() async {
         let store = TestStore(initialState: AppRootReducer.State(isLoggedIn: false)) {
             AppRootReducer()
@@ -52,7 +51,7 @@ final class AppRootReducerTests: XCTestCase {
             $0.login.path[id: 0] = nil
         }
     }
-    
+    @MainActor
     func test_signup_navigation_Home() async {
         let store = TestStore(initialState: AppRootReducer.State(isLoggedIn: false)) {
             AppRootReducer()
@@ -71,6 +70,5 @@ final class AppRootReducerTests: XCTestCase {
             $0.login.path[id: 0] = nil
             $0.isLoggedIn = true
         }
-        
     }
 }

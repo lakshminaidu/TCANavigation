@@ -9,29 +9,30 @@ import XCTest
 import ComposableArchitecture
 @testable import TCANavigation
 
-final class ProfileReducerTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
+final class ProfileReducerTests: XCTestCase {	
+    @MainActor
+    func test_logout() async {
+		let store = TestStore(initialState: ProfileReducer.State()) {
+			ProfileReducer()
+		}
+		await store.send(.logout) 
+	}
+    @MainActor
+	func test_fetchPhotos() async {
+		let store = TestStore(initialState: ProfileReducer.State()) {
+			ProfileReducer()
+		} withDependencies: {
+			$0.apiClient.fetchPhotos = { url in
+				return Photo.mocks
+			}
+		}
+		await store.send(.fetchdData) {
+			$0.isLoading = true
+		}
+		await store.receive(\.processResponse) {
+			$0.isLoading = false
+			$0.photos = Photo.mocks
+		}
+	}
 }

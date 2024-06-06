@@ -9,8 +9,10 @@ import Foundation
 import ComposableArchitecture
 
 @DependencyClient
-struct ApiClient: WebServiceType {
-    
+struct ApiClient {
+	var fetchPosts: (String) async throws -> [Post]
+	var fetchTodos: (String) async throws -> [TodoItem]
+	var fetchPhotos: (String) async throws -> [Photo]
 }
 
 extension DependencyValues {
@@ -21,5 +23,24 @@ extension DependencyValues {
 }
 
 extension ApiClient: DependencyKey {
-    static let liveValue = Self()
+	static var liveValue = Self(
+		fetchPosts: { fromURL in
+			return try await ApiManager.shared.fetch(fromURL: fromURL)
+		}, fetchTodos: { fromURL in
+			return try await ApiManager.shared.fetch(fromURL: fromURL)
+		}, fetchPhotos: { fromURL in
+			return try await ApiManager.shared.fetch(fromURL: fromURL)
+		}
+	)
+
+	static let mock = Self(
+		fetchPosts: { fromURL in
+			return Post.mocks
+		}, fetchTodos: { fromURL in
+			return TodoItem.mocks
+		}, fetchPhotos: { fromURL in
+			return Photo.mocks
+		}
+	  )
 }
+

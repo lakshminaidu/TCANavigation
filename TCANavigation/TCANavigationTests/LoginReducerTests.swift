@@ -9,8 +9,8 @@ import XCTest
 import ComposableArchitecture
 @testable import TCANavigation
 
-@MainActor
 final class LoginReducerTests: XCTestCase {
+    @MainActor
     func test_Login_withEmptyUsernameAndPassword() async {
         let store = TestStore(initialState: LoginReducer.State()) {
             LoginReducer()
@@ -21,6 +21,7 @@ final class LoginReducerTests: XCTestCase {
         }
     }
     
+    @MainActor
     func test_Login_withEmptyPassword() async {
         let store = TestStore(initialState: LoginReducer.State(username: "Test")) {
             LoginReducer()
@@ -31,6 +32,7 @@ final class LoginReducerTests: XCTestCase {
         }
     }
     
+    @MainActor
     func test_Login_success() async {
         let store = TestStore(initialState: LoginReducer.State(username: "Test", password: "password")) {
             LoginReducer()

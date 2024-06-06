@@ -10,28 +10,30 @@ import ComposableArchitecture
 @testable import TCANavigation
 
 final class DetailReducerTests: XCTestCase {
+    @MainActor
+    func test_logout() async {
+		let store = TestStore(initialState: DetailReducer.State()) {
+			DetailReducer()
+		}
+		await store.send(.logout)
+	}
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+    @MainActor
+	func test_fetchTodos() async {
+		let store = TestStore(initialState: DetailReducer.State()) {
+			DetailReducer()
+		} withDependencies: {
+			$0.apiClient.fetchTodos = { url in
+				return TodoItem.mocks
+			}
+		}
+		await store.send(.fetchdData) {
+			$0.isLoading = true
+		}
+		await store.receive(\.processResponse) {
+			$0.isLoading = false
+			$0.todos = TodoItem.mocks
+		}
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
+	}
 }

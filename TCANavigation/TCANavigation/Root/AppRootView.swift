@@ -57,6 +57,5 @@ struct AppRootReducer {
             HomeReducer()
         }
     }
-    
 }
 

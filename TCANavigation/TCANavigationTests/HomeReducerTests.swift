@@ -10,28 +10,62 @@ import ComposableArchitecture
 @testable import TCANavigation
 
 final class HomeReducerTests: XCTestCase {
+    @MainActor
+    func test_profile_logout() async {
+		let store = TestStore(initialState: HomeReducer.State()) {
+			HomeReducer()
+		}
+		await store.send(.showProfile(1)) {
+			$0.path[id: 0] = .profile(ProfileReducer.State(userid: 1))
+		}
+		await store.send(\.path[id: 0].profile.logout) {
+			$0.path[id: 0] = nil
+		}
+	}
+    
+    @MainActor
+	func test_detail_logout() async {
+		let store = TestStore(initialState: HomeReducer.State()) {
+			HomeReducer()
+		}
+		await store.send(.showDetail(1)) {
+			$0.path[id: 0] = .detail(DetailReducer.State(userid: 1))
+		}
+		await store.send(\.path[id: 0].detail.logout) {
+			$0.path[id: 0] = nil
+		}
+	}
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+    @MainActor
+	func test_apicall_fetchData() async {
+		let store = TestStore(initialState: HomeReducer.State()) {
+			HomeReducer()
+		} withDependencies: { _ in
+			return
+		}
+		await store.send(.processResponse(Post.mocks)) {
+			$0.isLoading = false
+			$0.posts = Post.mocks
+		}
+	}
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
+    @MainActor
+	func test_fetchPosts() async {
+		let store = TestStore(initialState: HomeReducer.State()) {
+			HomeReducer()
+		} withDependencies: {
+			$0.apiClient.fetchPosts = { url in
+				return Post.mocks
+			}
+		}
+		await store.send(.fetchdData) {
+			$0.isLoading = true
+			$0.posts = Post.mocks
+		}
+		await store.receive(\.processResponse) {
+			$0.isLoading = false
+			$0.posts = Post.mocks
+		}
+	}
 }
+

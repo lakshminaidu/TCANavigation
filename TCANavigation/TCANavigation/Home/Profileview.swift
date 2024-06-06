@@ -37,6 +37,13 @@ struct Profileview: View {
             }
         }
         .navigationTitle("Photos")
+		.toolbar {
+			Button  {
+				store.send(.logout)
+			} label: {
+				Image(systemName: "rectangle.portrait.and.arrow.right").resizable()
+			}
+		}
         .task {
             store.send(.fetchdData)
         }
@@ -74,7 +81,7 @@ struct ProfileReducer {
                 state.isLoading = true
                 return .run { send in
                     do {
-                        let todos: [Photo] = try await self.apiClient.fetch(fromURL: "https://jsonplaceholder.typicode.com/albums/1/photos")
+                        let todos: [Photo] = try await self.apiClient.fetchPhotos( "https://jsonplaceholder.typicode.com/albums/1/photos")
                         await send(.processResponse(todos))
                     } catch {
                         await send(.processResponse([]))
@@ -94,5 +101,9 @@ struct ProfileReducer {
 #Preview {
     Profileview(store: Store(initialState: ProfileReducer.State(), reducer: {
         ProfileReducer()
-    }))
+	}, withDependencies: {
+		$0.apiClient.fetchPhotos = { url in
+			return Photo.mocks
+		}
+	}))
 }
