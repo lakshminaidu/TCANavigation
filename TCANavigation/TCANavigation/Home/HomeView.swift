@@ -135,6 +135,9 @@ struct HomeReducer {
                 case .profile(.logout),
                      .detail(.logout):
                     state.path.removeAll()
+                    return .run { send in
+                        await send(.logout)
+                    }
                 default: break
                 }
                 return .none
