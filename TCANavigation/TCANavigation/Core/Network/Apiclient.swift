@@ -23,7 +23,7 @@ extension DependencyValues {
 }
 
 extension ApiClient: DependencyKey {
-	static var liveValue = Self(
+    static var liveValue: ApiClient = Self(
 		fetchPosts: { fromURL in
 			return try await ApiManager.shared.fetch(fromURL: fromURL)
 		}, fetchTodos: { fromURL in
@@ -33,7 +33,7 @@ extension ApiClient: DependencyKey {
 		}
 	)
 
-	static let mock = Self(
+	static let testValue: ApiClient = Self(
 		fetchPosts: { fromURL in
 			return Post.mocks
 		}, fetchTodos: { fromURL in

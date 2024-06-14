@@ -30,5 +30,6 @@ struct AppField: View {
 
 #Preview {
     AppField(text: .constant("hello"))
+        .padding()
 }
 

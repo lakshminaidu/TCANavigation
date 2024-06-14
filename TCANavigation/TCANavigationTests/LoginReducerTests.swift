@@ -56,6 +56,8 @@ final class LoginReducerTests: XCTestCase {
     func test_forgotPassword_navigation() async {
         let store = TestStore(initialState: LoginReducer.State()) {
             LoginReducer()
+        } withDependencies: {
+            $0.apiClient = .testValue
         }
         // show forgotPassword
         await store.send(.showForgoPassword) {

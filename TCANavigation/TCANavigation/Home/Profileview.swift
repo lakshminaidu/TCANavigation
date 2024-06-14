@@ -102,8 +102,6 @@ struct ProfileReducer {
     Profileview(store: Store(initialState: ProfileReducer.State(), reducer: {
         ProfileReducer()
 	}, withDependencies: {
-		$0.apiClient.fetchPhotos = { url in
-			return Photo.mocks
-		}
+        $0.apiClient = .testValue
 	}))
 }

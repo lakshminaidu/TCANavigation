@@ -23,9 +23,7 @@ final class DetailReducerTests: XCTestCase {
 		let store = TestStore(initialState: DetailReducer.State()) {
 			DetailReducer()
 		} withDependencies: {
-			$0.apiClient.fetchTodos = { url in
-				return TodoItem.mocks
-			}
+            $0.apiClient = .testValue
 		}
 		await store.send(.fetchdData) {
 			$0.isLoading = true

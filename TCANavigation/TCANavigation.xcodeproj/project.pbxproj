@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F201921F2C1CB60F0010CE03 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = F201921E2C1CB60F0010CE03 /* SnapshotTesting */; };
+		F20192212C1CB64F0010CE03 /* UISnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20192202C1CB64F0010CE03 /* UISnapshotTests.swift */; };
 		F21FDB002C0B2ADE002E16C2 /* AppField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21FDAFF2C0B2ADE002E16C2 /* AppField.swift */; };
 		F21FDB022C0B2C3F002E16C2 /* AppButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21FDB012C0B2C3F002E16C2 /* AppButton.swift */; };
 		F21FDB062C0B3011002E16C2 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21FDB052C0B3011002E16C2 /* DataModel.swift */; };
@@ -44,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F20192202C1CB64F0010CE03 /* UISnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UISnapshotTests.swift; path = TCANavigationTests/UISnapshotTests.swift; sourceTree = SOURCE_ROOT; };
 		F21FDAFF2C0B2ADE002E16C2 /* AppField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppField.swift; sourceTree = "<group>"; };
 		F21FDB012C0B2C3F002E16C2 /* AppButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButton.swift; sourceTree = "<group>"; };
 		F21FDB052C0B3011002E16C2 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
@@ -84,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F201921F2C1CB60F0010CE03 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +201,7 @@
 				F21FDB0F2C0BB422002E16C2 /* HomeReducerTests.swift */,
 				F21FDB112C0BB430002E16C2 /* DetailReducerTests.swift */,
 				F21FDB132C0BB447002E16C2 /* ProfileReducerTests.swift */,
+				F20192202C1CB64F0010CE03 /* UISnapshotTests.swift */,
 			);
 			path = TCANavigationTests;
 			sourceTree = "<group>";
@@ -254,6 +259,9 @@
 				F2D89C322C0A2DE300789FBF /* PBXTargetDependency */,
 			);
 			name = TCANavigationTests;
+			packageProductDependencies = (
+				F201921E2C1CB60F0010CE03 /* SnapshotTesting */,
+			);
 			productName = TCANavigationTests;
 			productReference = F2D89C302C0A2DE300789FBF /* TCANavigationTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -288,6 +296,7 @@
 			mainGroup = F2D89C172C0A2DE100789FBF;
 			packageReferences = (
 				F2D89C4D2C0A2E3E00789FBF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				F201921D2C1CB5FE0010CE03 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = F2D89C212C0A2DE100789FBF /* Products */;
 			projectDirPath = "";
@@ -345,6 +354,7 @@
 			files = (
 				F21FDB0A2C0BB3B1002E16C2 /* LoginReducerTests.swift in Sources */,
 				F21FDB082C0BB36D002E16C2 /* AppRootReducerTests.swift in Sources */,
+				F20192212C1CB64F0010CE03 /* UISnapshotTests.swift in Sources */,
 				F21FDB142C0BB447002E16C2 /* ProfileReducerTests.swift in Sources */,
 				F21FDB0E2C0BB3E0002E16C2 /* ForgotPasswordReducerTests.swift in Sources */,
 				F21FDB0C2C0BB3CA002E16C2 /* SignupReducerTests.swift in Sources */,
@@ -500,6 +510,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -529,6 +540,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -550,7 +562,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = aaa.TCANavigationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -569,7 +581,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = aaa.TCANavigationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -613,6 +625,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F201921D2C1CB5FE0010CE03 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.16.1;
+			};
+		};
 		F2D89C4D2C0A2E3E00789FBF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
@@ -624,6 +644,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F201921E2C1CB60F0010CE03 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F201921D2C1CB5FE0010CE03 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
 		F2D89C5B2C0A2FDF00789FBF /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F2D89C4D2C0A2E3E00789FBF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;

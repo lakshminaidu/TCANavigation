@@ -21,6 +21,7 @@ final class HomeReducerTests: XCTestCase {
 		await store.send(\.path[id: 0].profile.logout) {
 			$0.path[id: 0] = nil
 		}
+        await store.receive(\.logout)
 	}
     
     @MainActor
@@ -34,19 +35,24 @@ final class HomeReducerTests: XCTestCase {
 		await store.send(\.path[id: 0].detail.logout) {
 			$0.path[id: 0] = nil
 		}
+        await store.receive(\.logout)
 	}
 
     @MainActor
 	func test_apicall_fetchData() async {
 		let store = TestStore(initialState: HomeReducer.State()) {
 			HomeReducer()
-		} withDependencies: { _ in
-			return
+		} withDependencies: {
+            $0.apiClient = .testValue
 		}
-		await store.send(.processResponse(Post.mocks)) {
-			$0.isLoading = false
+		await store.send(.fetchdData) {
+			$0.isLoading = true
 			$0.posts = Post.mocks
 		}
+        await store.receive(\.processResponse) {
+            $0.isLoading = false
+            $0.posts = Post.mocks
+        }
 	}
 
     @MainActor
@@ -54,9 +60,7 @@ final class HomeReducerTests: XCTestCase {
 		let store = TestStore(initialState: HomeReducer.State()) {
 			HomeReducer()
 		} withDependencies: {
-			$0.apiClient.fetchPosts = { url in
-				return Post.mocks
-			}
+            $0.apiClient = .testValue
 		}
 		await store.send(.fetchdData) {
 			$0.isLoading = true
