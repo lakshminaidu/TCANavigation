@@ -15,6 +15,10 @@ struct ForgotPasswordView: View {
            Text("Welcome")
             AppField(placeHolder: "Enter password", text: $store.password, isSecure: true)
             AppField(placeHolder: "Confirm password", text: $store.confirmPassword, isSecure: true)
+            if !store.isValid {
+                Text(store.validationError)
+                    .foregroundStyle(.red)
+            }
             AppButton(action: { store.send(.updatePassword) }, title: "Update")
         }
         .padding()
@@ -35,6 +39,8 @@ struct ForgotPasswordReducer {
     struct State: Equatable {
         var password: String = ""
         var confirmPassword: String = ""
+        var isValid: Bool = false
+        var validationError: String = ""
     }
     
     enum Action: BindableAction {
@@ -57,8 +63,18 @@ struct ForgotPasswordReducer {
             case .binding(_):
                 return .none
             case .updatePassword:
-                return .run { send in
-                    await send(.showLogin)
+               if state.password.isEmpty || state.confirmPassword.isEmpty {
+                    state.isValid = false
+                    state.validationError = "Please enter password"
+                    return .none
+                } else if state.password != state.confirmPassword {
+                    state.isValid = false
+                    state.validationError = "Passwords are not matching"
+                    return .none
+                } else {
+                    return .run { send in
+                        await send(.showLogin)
+                    }
                 }
             case .showLogin:
                 return .none

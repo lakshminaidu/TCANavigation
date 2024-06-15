@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 struct HomeView: View {
     @Bindable var store: StoreOf<HomeReducer>
+    @State private var udid = UUID()
     var body: some View {
         NavigationStack(
             path: $store.scope(state: \.path, action: \.path)
@@ -78,9 +79,13 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(store: Store(initialState: HomeReducer.State(), reducer: {
-        HomeReducer()
-    }))
+    NavigationStack {
+        HomeView(store: Store(initialState: HomeReducer.State(), reducer: {
+            HomeReducer()
+        }, withDependencies: {
+            $0.apiClient = .testValue
+        }))
+    }
 }
 
 

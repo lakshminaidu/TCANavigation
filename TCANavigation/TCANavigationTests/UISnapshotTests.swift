@@ -12,10 +12,10 @@ import ComposableArchitecture
 
 
 final class UISnapshotTests: XCTestCase {
-
+    
     func testAppButton() {
         let uiComponent = AppButton()
-        assertSnapshot(of: uiComponent, as: .image)
+        assertSnapshot(of: uiComponent, as: .image(precision: 812))
     }
     
     func testAppField_placeHolder() {
@@ -66,7 +66,7 @@ final class UISnapshotTests: XCTestCase {
         let loginReducer = Store(initialState: LoginReducer.State(), reducer: {
             LoginReducer()
         })
-        let loginView =  LoginView(store: loginReducer)
+        let loginView = LoginView(store: loginReducer)
         // show signup
         loginReducer.send(.login)
         assertSnapshot(of: loginView, as: .image)
@@ -77,9 +77,48 @@ final class UISnapshotTests: XCTestCase {
             LoginReducer()
         })
         
-        let loginView =  LoginView(store: loginReducer)
-        // show signup
+        let loginView = LoginView(store: loginReducer)
         loginReducer.send(.login)
         assertSnapshot(of: loginView, as: .image)
+    }
+    
+    func testDetailView() {
+        
+        let detailReducer = Store(initialState: DetailReducer.State(), reducer: {
+            DetailReducer()
+        })
+        let detailView = DetailView(store: detailReducer)
+        // show signup
+        assertSnapshot(of: detailView, as: .image(layout: .device(config: ViewImageConfig(size: UIScreen.main.bounds.size))))
+    }
+    @MainActor
+    func testProfile() async {
+       let profileStore = Store(initialState: ProfileReducer.State(), reducer: {
+            ProfileReducer()
+        }, withDependencies: {
+            $0.apiClient = .testValue
+        })
+        profileStore.send(.fetchdData)
+        let profile = Profileview(store: profileStore)
+        assertSnapshot(of: profile, as: .image(layout: .device(config: ViewImageConfig(size: UIScreen.main.bounds.size))))
+    }
+    @MainActor
+    func testForgotPassword_validation() async {
+        let forgotPasswordStore = Store(initialState: ForgotPasswordReducer.State(), reducer: {
+            ForgotPasswordReducer()
+        })
+        let forgotPassword = ForgotPasswordView(store: forgotPasswordStore)
+        forgotPasswordStore.send(.updatePassword)
+        assertSnapshot(of: forgotPassword, as: .image(layout: .device(config: ViewImageConfig(size: UIScreen.main.bounds.size))))
+    }
+    
+    @MainActor
+    func testForgotPassword_validationWithDiffrentPasswords() async {
+        let forgotPasswordStore = Store(initialState: ForgotPasswordReducer.State(password: "hello", confirmPassword: "Test"), reducer: {
+            ForgotPasswordReducer()
+        })
+        let forgotPassword = ForgotPasswordView(store: forgotPasswordStore)
+        forgotPasswordStore.send(.updatePassword)
+        assertSnapshot(of: forgotPassword, as: .image(layout: .device(config: ViewImageConfig(size: UIScreen.main.bounds.size))))
     }
 }

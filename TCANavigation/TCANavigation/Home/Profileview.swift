@@ -99,9 +99,11 @@ struct ProfileReducer {
 }
 
 #Preview {
-    Profileview(store: Store(initialState: ProfileReducer.State(), reducer: {
-        ProfileReducer()
-	}, withDependencies: {
-        $0.apiClient = .testValue
-	}))
+    NavigationStack {
+        Profileview(store: Store(initialState: ProfileReducer.State(), reducer: {
+            ProfileReducer()
+        }, withDependencies: {
+            $0.apiClient = .testValue
+        }))
+    }
 }

@@ -49,9 +49,13 @@ struct DetailView: View {
 }
 
 #Preview {
-    DetailView(store: Store(initialState: DetailReducer.State(), reducer: {
-        DetailReducer()
-    }))
+    NavigationStack {
+        DetailView(store: Store(initialState: DetailReducer.State(), reducer: {
+            DetailReducer()
+        }, withDependencies: {
+            $0.apiClient = .testValue
+        }))
+    }
 }
 
 
